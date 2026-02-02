@@ -52,13 +52,13 @@ def get_and_transfer_s3_data_to_ods_pg(
         SET TIMEZONE = 'UTC';
         INSTALL httpfs;
         LOAD httpfs;
-        SET url_style = 'path';
+        SET s3_url_style = 'path';
         SET s3_endpoint = 'minio:9000';
-        SET s3_access_key = {ACCESS_KEY};
-        SET s3_secret_access_key = {SECRET_KEY};
+        SET s3_access_key_id = '{ACCESS_KEY}';
+        SET s3_secret_access_key = '{SECRET_KEY}';
         SET s3_use_ssl = FALSE;
         
-        CREATE SECRET dwh_postrgres (
+        CREATE SECRET dwh_postgres (
             TYPE postgres,
             HOST 'postgres_dwh',
             PORT 5432,
@@ -67,7 +67,7 @@ def get_and_transfer_s3_data_to_ods_pg(
             PASSWORD '{PASSWORD}'
         );
         
-        ATTACH '' AS dwh_postgres_db (TYPE postgres, SECRET dwh_postgres)
+        ATTACH '' AS dwh_postgres_db (TYPE postgres, SECRET dwh_postgres);
         
         INSERT INTO dwh_postgres_db.{SCHEMA}.{TARGET_TABLE}
         (
@@ -100,7 +100,7 @@ def get_and_transfer_s3_data_to_ods_pg(
             longitude,
             depth,
             mag,
-            mag_type,
+            magType AS mag_type,
             nst,
             gap,
             dmin,
@@ -110,13 +110,13 @@ def get_and_transfer_s3_data_to_ods_pg(
             updated,
             place,
             type,
-            horizontal_error,
-            depth_error,
-            mag_error,
-            mag_nst,
+            horizontalError AS horizontal_error,
+            depthError AS depth_error,
+            magError AS mag_error,
+            magNst AS mag_nst,
             status,
-            location_source,
-            mag_source
+            locationSource AS location_source,
+            magSource AS mag_source
         FROM 's3://prod/{LAYER}/{SOURCE}/{start_date}/{start_date}_00-00-00.gz.parquet';
         """
     )
