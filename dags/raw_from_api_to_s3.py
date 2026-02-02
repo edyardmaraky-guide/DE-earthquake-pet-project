@@ -10,9 +10,11 @@ from airflow.providers.standard.operators.empty import EmptyOperator
 OWNER = "e.novikau"
 DAG_ID = "raw_from_api_to_s3"
 
+#Слои в S3
 LAYER = "raw"
 SOURCE = "earthquake"
 
+#S3
 ACCESS_KEY = Variable.get("access_key")
 SECRET_KEY = Variable.get("secret_key")
 
@@ -68,7 +70,7 @@ def get_and_transfer_api_data_to_s3(
 with DAG(
     dag_id=DAG_ID,
     start_date=pendulum.datetime(2026, 1, 25, tz="Europe/Moscow"),
-    schedule="0 5 * * *",   # 👈 schedule вместо schedule_interval
+    schedule="0 5 * * *",   # schedule вместо schedule_interval
     catchup=True,
     default_args=DEFAULT_ARGS,
     tags=["s3", "raw"],
