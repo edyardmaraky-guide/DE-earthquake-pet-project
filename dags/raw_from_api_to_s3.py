@@ -37,9 +37,15 @@ def get_and_transfer_api_data_to_s3(
     data_interval_end=None,
 ):
     start_date = data_interval_start.format("YYYY-MM-DD")
-    end_date = data_interval_end.format("YYYY-MM-DD")
+    
+    if data_interval_end and data_interval_end != data_interval_start:
+        end_date = data_interval_end.format("YYYY-MM-DD")
+    else:
+        # Если end_date равен start_date, добавляем 1 день
+        end_date = data_interval_start.add(days=1).format("YYYY-MM-DD")
 
     logging.info(f"💻 Start load for dates: {start_date}/{end_date}")
+    logging.info(f'Downloading from: https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime={start_date}&endtime={end_date}')
 
     con = duckdb.connect()
     con.sql(
@@ -86,3 +92,9 @@ with DAG(
     end = EmptyOperator(task_id="end")
 
     start >> load >> end
+    
+
+
+
+# 2026-01-25
+# https://earthquake.usgs.gov/fdsnws/event/1/query?format=csv&starttime=2026-01-25&endtime=2026-01-26
