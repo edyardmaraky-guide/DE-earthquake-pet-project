@@ -36,9 +36,6 @@ AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://airflow:airflow@postgres/airflow
 _AIRFLOW_WWW_USER_USERNAME=airflow
 _AIRFLOW_WWW_USER_PASSWORD=airflow
 
-# Optional: additional python packages
-_PIP_ADDITIONAL_REQUIREMENTS=
-
 # ------------------------------------
 # MinIO credentials (если нужно использовать в DAG)
 # ------------------------------------
