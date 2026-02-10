@@ -60,10 +60,10 @@ x-airflow-common:
     AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__API_AUTH__JWT_SECRET: qt2Edq6lIRdv5k0DDznVOA== #добавил по совету из гитхаба
-    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://airflow-apiserver:8080/execution/'  #закомментил из за дипсика
-    AIRFLOW__API__AUTH_BACKEND: airflow.api.auth.backend.basic_auth # добавил переменную из за дипсика
-    AIRFLOW__SCHEDULER__USE_EXECUTION_API: 'false' # добавил переменную из за дипсика
+    AIRFLOW__API_AUTH__JWT_SECRET: qt2Edq6lIRdv5k0DDznVOA== #добавил по совету из гитхаба, без этой переменной воркер airflow не может достучаться до web-server'а из-за разных jwt токенов, другими словами таски в даге будут уходить на ретрай бесконечно.
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://airflow-apiserver:8080/execution/'  
+    AIRFLOW__API__AUTH_BACKEND: airflow.api.auth.backend.basic_auth 
+    AIRFLOW__SCHEDULER__USE_EXECUTION_API: 'false'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     AIRFLOW__API__SECRET_KEY: ${AIRFLOW__API__SECRET_KEY}
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
